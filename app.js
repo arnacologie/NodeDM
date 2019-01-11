@@ -6,10 +6,9 @@ const fs = require('fs');
 const app = express();
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(express.json());
-//app.use(cors);
 
 const port = 3000;
-const apiPath = '/api/v1/product';
+const apiPath = '/api/v1/products';
 
 app.listen(port, () => {
     console.log(`server on on port ${port}`)
@@ -25,21 +24,30 @@ mongoose.connect('mongodb://arnacologie1:arnacologie1@ds251804.mlab.com:51804/ar
     }
 });
 
-let createFile = fs.readFileSync('./html/create.html', 'UTF-8');
-app.get('/', (req, res) => {
-    res.send('Hello world');
+//welcome
+app.get(`/`, (req, res) => {
+    res.send('"Je ne parviens pas à vous identifier"');
+});
+app.get(`/:name`, (req, res) => {
+    res.send(`Bonjour ${req.params.name}, Bienvenue sur votre API de gestion de catalogue produit.`)
 });
 
 //CRUD Product
+//create
 app.get(`${apiPath}/create`, (req, res)=>{
+    let createFile = fs.readFileSync('./html/create.html', 'UTF-8');
     res.send(createFile);
 });
 app.post(`${apiPath}/create`, productController.createProduct);
-app.get(`${apiPath}/read`, productController.getProducts);
+//read
 app.get(`${apiPath}/read/:id`, productController.findProduct);
+app.get(`${apiPath}/read`, productController.getProducts);
+//update
 app.put(`${apiPath}/update/:id`, productController.updateProduct);
-app.delete(`${apiPath}/delete/:id`, productController.deleteProduct);
-app.get(`${apiPath}/delete`, productController.deleteProducts);
-app.post(`${apiPath}/delete`, (req, res)=>{
-    res.send(req.body);
-});
+app.put(`${apiPath}/update`, productController.updateProducts);
+//delete
+app.get(`${apiPath}/delete/:id`, productController.deleteProduct);
+app.get(`${apiPath}/delete`, productController.deleteProductsGet);
+app.post(`${apiPath}/delete`,  productController.deleteProductsPost);
+//calculatetaxe
+app.get(`${apiPath}/calculate-taxe/:id`,  productController.calculateTaxe);

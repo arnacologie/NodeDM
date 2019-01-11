@@ -6,10 +6,10 @@
 </head>
 <body>
 	<div>
-        <h3>Cocher le produit à supprimer</h3>
-        <form action="/api/v1/product/delete" method="post">
-            <label for="team_name">Enter a reference: </label>
-            <input id="team_name" type="checkbox" name="reference"><br>
+        <h3>Cocher le(s) produit(s) à supprimer</h3>
+        <form action="/api/v1/products/delete" method="post">
+            {{placeholder}}
+            <br><input type="submit" value="Supprimer la selection">
         </form>
     </div>
 </body>
